@@ -3,7 +3,7 @@ const path=require("path") // file ka extension janne ke liye
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {  // destination mtlb hmari file kha store hogi 
-        cb(null, "uploads/"); // Files uploads folder me save hongi or yha cb callback function hai
+        cb(null, "uploads/"); // Files uploads folder me save hongi or yha cb callback function hai CB(ERROR,FILE UPLOAD)
     },
     filename: function (req, file, cb) { // ye function filename bnane mei help karta hai
         const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);//ye isliye kia taki ek unique naam de ske file ko
