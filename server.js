@@ -8,8 +8,7 @@ const app=express();
 const PORT=3000;
 
 app.use(express.json()); 
-app.set("view engine","ejs");
-app.set("views",path.resolve("/views"));
+
 app.get("/",(req,res)=>{
    res.send("Welcome to file upload api");
 });
@@ -42,23 +41,32 @@ app.delete("/delete-file/:fileId", (req, res) => {
 });
 
 
-app.post("/rename-file", express.json(), (req, res) => {  //json body se file id and file name nikaklna
+app.post("/rename-file", (req, res) => {
     const { fileId, newName } = req.body;
-    const oldPath = `uploads/${fileId}`;
-    const newPath = `uploads/${newName}`;
 
-    if (!fs.existsSync(oldPath)) {
-        return res.status(404).json({ message: "File not found!" }); // agr file nhi  mili toh error throw krega
+    if (!fileId || !newName) {
+        return res.status(400).json({ message: "File ID and new name are required!" });
     }
 
-    fs.rename(oldPath, newPath, (err) => {   //file ko rename krega
+    const oldPath = path.join(__dirname, "uploads", fileId);
+    const newPath = path.join(__dirname, "uploads", newName);
+
+    console.log("Old Path:", oldPath);  // Debugging ke liye
+    console.log("New Path:", newPath);  // Debugging ke liye
+
+    if (!fs.existsSync(oldPath)) {
+        return res.status(404).json({ message: "File not found!" });
+    }
+
+    fs.rename(oldPath, newPath, (err) => {
         if (err) {
+            console.error("Rename Error:", err);  // Error logging
             return res.status(500).json({ message: "Error renaming file!" });
         }
-        res.status(200).json({ message: "File renamed successfully!" });
+        res.status(200).json({ message: "File renamed successfully!", newFileName: newName });
     });
-
 });
+
 
 
 app.listen(PORT,() =>{

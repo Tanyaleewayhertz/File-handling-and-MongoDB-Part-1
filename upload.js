@@ -2,7 +2,7 @@ const multer=require("multer"); //multer ko import kkra hua hai
 const path=require("path") // file ka extension janne ke liye
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {  // destination mtlb hmari file kha sore hogi 
+    destination: function (req, file, cb) {  // destination mtlb hmari file kha store hogi 
         cb(null, "uploads/"); // Files uploads folder me save hongi or yha cb callback function hai
     },
     filename: function (req, file, cb) { // ye function filename bnane mei help karta hai
